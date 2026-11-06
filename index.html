@@ -43,7 +43,11 @@
   --pos:#55C584; --neg:#EF7C63; --warn:#E2A84A; --fix:#86A6D2; --var:#EE8F5F; --free:#43B6AE;
   --shadow:0 1px 2px rgb(0 0 0 / .3); color-scheme:dark;
 }
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+@keyframes fromR{from{transform:translateX(32px);opacity:.35}to{transform:none;opacity:1}}
+@keyframes fromL{from{transform:translateX(-32px);opacity:.35}to{transform:none;opacity:1}}
+#view.from-r{animation:fromR .22s ease-out}
+#view.from-l{animation:fromL .22s ease-out}
 body{
   background:var(--bg); color:var(--fg); font-family:var(--f-body); font-size:15px; line-height:1.45;
   padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
@@ -848,6 +852,21 @@ document.addEventListener('change',function(ev){
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&$('#sheet').hidden)render()});
 
+/* Wischen zwischen den Reitern */
+var TABS=['home','entries','budget','fixed','stats'],sx=null,sy=0,st0=0;
+document.addEventListener('touchstart',function(e){
+  sx=null;if(!$('#sheet').hidden||e.touches.length>1)return;
+  var t=e.touches[0],w=window.innerWidth;
+  if(t.clientX<24||t.clientX>w-24||e.target.closest('.chips,input,textarea,select,.tabs'))return;
+  sx=t.clientX;sy=t.clientY;st0=Date.now();
+},{passive:true});
+document.addEventListener('touchend',function(e){
+  if(sx==null)return;var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;
+  if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.6||Date.now()-st0>700)return;
+  var i=TABS.indexOf(ui.tab)+(dx<0?1:-1);if(i<0||i>=TABS.length)return;
+  ui.tab=TABS[i];render();window.scrollTo(0,0);
+  var v=$('#view');v.classList.remove('from-r','from-l');void v.offsetWidth;v.classList.add(dx<0?'from-r':'from-l');
+},{passive:true});
 var themeSet=false;
 function applyTheme(){var t=S.prefs.theme||'system',r=document.documentElement;if(t==='system'){if(themeSet){r.removeAttribute('data-theme');themeSet=false}}else{r.setAttribute('data-theme',t);themeSet=true}}
 applyTheme();
