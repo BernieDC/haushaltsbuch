@@ -62,7 +62,9 @@ button{font:inherit;color:inherit}
 /* Kopf */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);padding-block:12px 10px}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand h1{font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:-.02em;margin:0}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:-.02em;margin:0;display:flex;align-items:baseline;gap:7px;min-width:0}
+.brand h1>span:first-child{flex:none}
+.owner{font-family:var(--f-body);font-weight:500;font-size:16px;letter-spacing:0;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .iconbtn{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;border:0;background:var(--surface);box-shadow:var(--shadow);cursor:pointer}
 .iconbtn svg{width:20px;height:20px}
 .monthbar{display:flex;align-items:center;gap:6px;margin-top:10px}
@@ -255,7 +257,7 @@ textarea{min-height:80px;font-family:var(--f-mono);font-size:13px;resize:vertica
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <h1>girlmath<span class="emo" aria-hidden="true">✨️</span></h1>
+      <h1><span>girlmath<span class="emo" aria-hidden="true">✨️</span></span><span class="owner" id="owner" hidden></span></h1>
       <button class="iconbtn" data-action="settings" aria-label="Einstellungen und Backup">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
       </button>
@@ -634,6 +636,8 @@ var VIEWS={home:vHome,entries:vEntries,budget:vBudget,fixed:vFixed,stats:vStats}
 function render(){
   $('#month-label').textContent=monthName(ui.month,{month:'long',year:'numeric'});
   $('#month-today').hidden=ui.month===curYM();
+  var nm=(S.prefs.name||'').trim(),ow=$('#owner');ow.textContent=nm?'von '+nm:'';ow.hidden=!nm;
+  $('.fab').hidden=!(ui.tab==='home'||ui.tab==='entries');
   document.querySelectorAll('.tab').forEach(function(t){if(t.dataset.tab===ui.tab)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current')});
   $('#view').innerHTML=VIEWS[ui.tab]();
 }
@@ -691,6 +695,7 @@ function openSettings(){
   form={type:'settings'};
   var h='<div class="set">'+
     '<div class="notebox">Deine Daten liegen nur auf diesem Gerät, in diesem Browser. Es gibt keinen Server und kein Konto. Speichere ab und zu ein Backup, zum Beispiel in der Dateien-App oder in iCloud Drive.</div>'+
+    '<h3>Dein Name</h3><label class="fld" for="set-name"><span>Erscheint oben als „girlmath von …“</span><input id="set-name" maxlength="24" autocomplete="given-name" placeholder="z. B. Lena" value="'+esc(S.prefs.name||'')+'"></label>'+
     '<h3>Darstellung</h3><div class="seg" role="group" aria-label="Darstellung">'+[['system','Wie iPhone'],['light','Hell'],['dark','Dunkel']].map(function(o){return '<button data-action="theme" data-t="'+o[0]+'" aria-pressed="'+((S.prefs.theme||'system')===o[0])+'">'+o[1]+'</button>'}).join('')+'</div>'+
     '<h3>Backup erstellen</h3>'+
     '<div class="btnrow"><button class="btn" data-action="download-backup">Als Datei sichern</button><button class="btn" data-action="copy-backup">Als Text kopieren</button></div>'+
@@ -836,6 +841,7 @@ document.addEventListener('click',function(ev){
   }
 });
 document.addEventListener('submit',function(ev){ev.preventDefault();submitForm(ev.target.id)});
+document.addEventListener('input',function(ev){if(ev.target.id==='set-name'){S.prefs.name=ev.target.value.trim();save();render()}});
 document.addEventListener('change',function(ev){
   if(ev.target.id==='import-file'){var f=ev.target.files&&ev.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){importData(r.result)};r.readAsText(f)}
 });
