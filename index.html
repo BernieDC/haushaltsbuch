@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Haushaltsbuch">
+<meta name="apple-mobile-web-app-title" content="girlmath">
 <meta name="theme-color" content="#EDF1F0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0D1412" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
@@ -14,7 +14,7 @@
 <link rel="icon" href="icon-192.png">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <script>window.__STANDALONE__=true</script>
-<title>Haushaltsbuch</title>
+<title>girlmath</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
 :root{
   --bg:#EDF1F0; --surface:#FFFFFF; --surface-2:#E2E9E7; --fg:#12201C; --muted:#5A6A66; --line:#D2DCD9;
   --accent:#0A6B6B; --accent-fg:#FFFFFF; --accent-soft:#D3EAE8;
-  --pos:#1D7A46; --neg:#B63F29; --fix:#3E5C86; --var:#D06A3A; --free:#0A6B6B;
+  --pos:#1D7A46; --neg:#B63F29; --warn:#A86E0C; --fix:#3E5C86; --var:#D06A3A; --free:#0A6B6B;
   --shadow:0 1px 2px rgb(18 32 28 / .06), 0 6px 20px rgb(18 32 28 / .06);
   --f-display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
   --f-body:"Instrument Sans",-apple-system,system-ui,"Segoe UI",sans-serif;
@@ -34,13 +34,13 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0D1412; --surface:#16201D; --surface-2:#1F2B28; --fg:#E5EEEB; --muted:#93A39F; --line:#2A3734;
   --accent:#43B6AE; --accent-fg:#06201E; --accent-soft:#163A37;
-  --pos:#55C584; --neg:#EF7C63; --fix:#86A6D2; --var:#EE8F5F; --free:#43B6AE;
+  --pos:#55C584; --neg:#EF7C63; --warn:#E2A84A; --fix:#86A6D2; --var:#EE8F5F; --free:#43B6AE;
   --shadow:0 1px 2px rgb(0 0 0 / .3); color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#0D1412; --surface:#16201D; --surface-2:#1F2B28; --fg:#E5EEEB; --muted:#93A39F; --line:#2A3734;
   --accent:#43B6AE; --accent-fg:#06201E; --accent-soft:#163A37;
-  --pos:#55C584; --neg:#EF7C63; --fix:#86A6D2; --var:#EE8F5F; --free:#43B6AE;
+  --pos:#55C584; --neg:#EF7C63; --warn:#E2A84A; --fix:#86A6D2; --var:#EE8F5F; --free:#43B6AE;
   --shadow:0 1px 2px rgb(0 0 0 / .3); color-scheme:dark;
 }
 html{-webkit-text-size-adjust:100%}
@@ -89,6 +89,24 @@ section h2{font-family:var(--f-display);font-weight:600;font-size:18px;letter-sp
 .bar span{display:block;height:100%}
 .sw-fix,.bar .s-fix{background:var(--fix)} .sw-var,.bar .s-var{background:var(--var)} .sw-free,.bar .s-free{background:var(--free)} .sw-over{background:var(--neg)}
 .legend{display:grid;gap:6px}
+.emo{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-weight:400;margin-left:2px}
+.blist{display:flex;flex-direction:column;gap:10px}
+.bcard{display:block;width:100%;text-align:left;border:0;background:var(--surface);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);cursor:pointer}
+.bcard:active{background:var(--surface-2)}
+.btop{display:flex;align-items:center;gap:8px}
+.btop .cn{font-weight:600}
+.pill{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill.ok{color:var(--pos);background:color-mix(in srgb, var(--pos) 13%, transparent)}
+.pill.warn{color:var(--warn);background:color-mix(in srgb, var(--warn) 15%, transparent)}
+.pill.over{color:var(--neg);background:color-mix(in srgb, var(--neg) 13%, transparent)}
+.bleft{font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:-.02em;margin:8px 0 8px;font-variant-numeric:tabular-nums}
+.bleft small{font-family:var(--f-body);font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0}
+.bbar{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.bbar span{display:block;height:100%;border-radius:4px}
+.bmeta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;font-size:12.5px;color:var(--muted);margin-top:7px}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:8px 0;border-top:1px solid var(--line)}
+.kv:first-of-type{margin-top:12px}
+.add-chip{font-size:13px;font-weight:600;color:var(--accent)}
 .hero-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .pie{display:flex;justify-content:center;margin:14px 0 14px}
 .pie svg{width:176px;height:176px;max-width:100%}
@@ -174,8 +192,8 @@ section h2{font-family:var(--f-display);font-weight:600;font-size:18px;letter-sp
 /* Tab-Leiste & FAB */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:7;background:var(--surface);border-top:1px solid var(--line);
   padding-left:max(8px, env(safe-area-inset-left, 0px));padding-right:max(8px, env(safe-area-inset-right, 0px));padding-bottom:env(safe-area-inset-bottom,0px)}
-.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
-.tab{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer}
+.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.tab{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;font-size:10.5px;font-weight:500;color:var(--muted);cursor:pointer;min-width:0}
 .tab svg{width:22px;height:22px}
 .tab[aria-current="page"]{color:var(--accent)}
 .fab{position:fixed;z-index:8;right:max(16px, calc(env(safe-area-inset-right, 0px) + 16px));bottom:calc(76px + env(safe-area-inset-bottom, 0px));
@@ -237,7 +255,7 @@ textarea{min-height:80px;font-family:var(--f-mono);font-size:13px;resize:vertica
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <h1>Haushaltsbuch</h1>
+      <h1>girlmath<span class="emo" aria-hidden="true">✨️</span></h1>
       <button class="iconbtn" data-action="settings" aria-label="Einstellungen und Backup">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
       </button>
@@ -260,6 +278,7 @@ textarea{min-height:80px;font-family:var(--f-mono);font-size:13px;resize:vertica
   <div class="in">
     <button class="tab" data-action="tab" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12l6 6"/></svg>Übersicht</button>
     <button class="tab" data-action="tab" data-tab="entries"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg>Buchungen</button>
+    <button class="tab" data-action="tab" data-tab="budget"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10.5h18M15.5 15h2.5"/><path d="M7 6l9-3 1 3"/></svg>Budget</button>
     <button class="tab" data-action="tab" data-tab="fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg>Fixkosten</button>
     <button class="tab" data-action="tab" data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20v-8M12 20V5M19 20v-5M3 20h18"/></svg>Auswertung</button>
   </div>
@@ -341,7 +360,7 @@ function active(x,m){return (!x.from||x.from<=m)&&(!x.to||x.to>=m)}
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 
 /* ---------- Daten ---------- */
-function norm(d){d.customCats=d.customCats||{};d.customCats.var=d.customCats.var||[];d.customCats.fix=d.customCats.fix||[];d.prefs=d.prefs||{};return d}
+function norm(d){d.customCats=d.customCats||{};d.customCats.var=d.customCats.var||[];d.customCats.fix=d.customCats.fix||[];d.prefs=d.prefs||{};d.budgets=d.budgets||{};d.budgets.default=d.budgets.default||{};d.budgets.months=d.budgets.months||{};return d}
 function empty(){return norm({v:1,sample:false,incomes:[],fixed:[],entries:[]})}
 function valid(d){return d&&Array.isArray(d.incomes)&&Array.isArray(d.fixed)&&Array.isArray(d.entries)}
 function makeSample(){
@@ -367,6 +386,7 @@ function makeSample(){
     if(i===2)k(2,'reisen',120,260,['Hotel','Zugticket']);
     if(i===1){var dd=m+'-14';if(dd<=today)s.entries.push({id:uid(),kind:'in',date:dd,amount:8450,cat:'einnahme',note:'Steuer-Rückerstattung'})}
   }
+  s.budgets={default:{lebensmittel:35000,restaurant:12000,shopping:15000,freizeit:10000},months:{}};
   return norm(s);
 }
 var storageOk=true;
@@ -411,8 +431,8 @@ function donut(st){
 }
 function vHome(){
   var m=ui.month,st=stats(m),cur=m===curYM(),h='';
-  if(S.sample)h+='<div class="notice"><div><strong>Beispieldaten</strong><p>So sieht das Haushaltsbuch nach ein paar Monaten aus. Alle Zahlen sind ausgedacht.</p></div><button class="btn small" data-action="start-own">Eigene Daten</button></div>';
-  if(!S.incomes.length)h+='<div class="empty"><strong>Trag zuerst dein Netto-Gehalt ein</strong>Daraus berechnet das Haushaltsbuch, wie viel dir jeden Monat bleibt.<div style="margin-top:12px"><button class="btn" data-action="add-income">Gehalt eintragen</button></div></div>';
+  if(S.sample)h+='<div class="notice"><div><strong>Beispieldaten</strong><p>So sieht girlmath nach ein paar Monaten aus. Alle Zahlen sind ausgedacht.</p></div><button class="btn small" data-action="start-own">Eigene Daten</button></div>';
+  if(!S.incomes.length)h+='<div class="empty"><strong>Trag zuerst dein Netto-Gehalt ein</strong>Daraus berechnet die App, wie viel dir jeden Monat bleibt.<div style="margin-top:12px"><button class="btn" data-action="add-income">Gehalt eintragen</button></div></div>';
   var over=st.free<0,base=Math.max(st.income,st.fix+st.vari,1);
   var seg=function(cls,v){return v>0?'<span class="'+cls+'" style="width:'+(v/base*100).toFixed(2)+'%"></span>':''};
   var leg=function(sw,label,v){return '<div class="lg"><span class="sw '+sw+'"></span><span>'+label+'</span><span class="amt">'+money0(v)+'</span><span class="lgp">'+(st.income>0?pctf(v/st.income):'')+'</span></div>'};
@@ -423,8 +443,6 @@ function vHome(){
     '<div class="sub">von '+money(st.income)+' Einnahmen'+(st.extra?' (davon '+money(st.extra)+' extra)':'')+'</div>'+
     (pie?donut(st):'<div class="bar" role="img" aria-label="Fixkosten '+money0(st.fix)+', variabel '+money0(st.vari)+', frei '+money0(st.free)+'">'+seg('s-fix',st.fix)+seg('s-var',st.vari)+(over?'':seg('s-free',st.free))+'</div>')+
     '<div class="legend">'+leg('sw-fix','Fixkosten',st.fix)+leg('sw-var','Variable Ausgaben',st.vari)+leg(over?'sw-over':'sw-free',over?'Fehlbetrag':'Frei',Math.abs(st.free))+'</div>';
-  if(cur&&st.income>0&&!over){var rem=daysInMonth(m)-new Date().getDate()+1;
-    h+='<div class="daily"><span>Tagesbudget</span><strong>'+money(Math.floor(st.free/rem))+'</strong><span class="muted">für die restlichen '+rem+' Tage</span></div>'}
   h+='</section>';
   var es=sortEntries(S.entries.filter(function(e){return e.date.slice(0,7)===m})).slice(0,5);
   h+='<section><div class="sec-head"><h2>Letzte Buchungen</h2>'+(es.length?'<button class="link" data-action="tab" data-tab="entries">Alle</button>':'')+'</div>';
@@ -483,6 +501,79 @@ function vFixed(){
   return h;
 }
 
+/* ---------- Budget ---------- */
+function budgetsFor(m){
+  var out={},d=S.budgets.default,o=S.budgets.months[m]||{};
+  Object.keys(d).forEach(function(k){out[k]=d[k]});Object.keys(o).forEach(function(k){out[k]=o[k]});
+  Object.keys(out).forEach(function(k){if(!(out[k]>0))delete out[k]});return out;
+}
+function budgetMsg(cat,m){
+  var b=budgetsFor(m)[cat];if(!b)return null;var sp=stats(m).byCat[cat]||0,c=catVar(cat);
+  return sp<=b?'Budget '+c.name+': noch '+money(b-sp)+' übrig':'Budget '+c.name+': '+money(sp-b)+' drüber';
+}
+function vBudget(){
+  var m=ui.month,st=stats(m),bud=budgetsFor(m),cur=m===curYM(),rem=cur?daysInMonth(m)-new Date().getDate()+1:0,order=varCats();
+  var ids=Object.keys(bud).sort(function(a,b){return order.indexOf(catVar(a))-order.indexOf(catVar(b))});
+  var totalB=0,spentB=0;ids.forEach(function(id){totalB+=bud[id];spentB+=st.byCat[id]||0});
+  var avail=st.income-st.fix,unplanned=avail-totalB,h='';
+  if(ids.length){
+    var leftT=totalB-spentB,ratioT=totalB?spentB/totalB:0;
+    h+='<section class="hero"><div class="eyebrow">Budgets im '+monthName(m,{month:'long'})+'</div>'+
+      '<div class="big '+(leftT<0?'neg':'')+'">'+money(leftT)+'</div><div class="sub">'+(leftT<0?'über allen Budgets':'noch übrig von '+money(totalB))+'</div>'+
+      '<div class="bbar" style="margin-top:14px"><span style="width:'+(Math.min(ratioT,1)*100).toFixed(1)+'%;background:'+(ratioT>1?'var(--neg)':ratioT>=.8?'var(--warn)':'var(--accent)')+'"></span></div>'+
+      '<div class="kv"><span class="muted">Nach Fixkosten verfügbar</span><span class="amt">'+money(avail)+'</span></div>'+
+      '<div class="kv"><span class="muted">Davon budgetiert</span><span class="amt">'+money(totalB)+'</span></div>'+
+      '<div class="kv"><span class="muted">Noch nicht verplant</span><span class="amt '+(unplanned<0?'neg':'')+'">'+money(unplanned)+'</span></div>'+
+      (unplanned<0?'<p class="hint neg" style="margin-top:4px">Du hast mehr verplant, als nach den Fixkosten übrig bleibt.</p>':'')+
+    '</section>';
+  }
+  h+='<section><div class="sec-head"><h2>Deine Budgets</h2><button class="link" data-action="add-budget">+ Budget</button></div>';
+  if(!ids.length)h+='<div class="empty"><strong>Noch keine Budgets</strong>Leg fest, wie viel du pro Monat für eine Kategorie ausgeben willst, zum Beispiel 150 € für Shopping. Jede Ausgabe in der Kategorie verbraucht dann das Budget.<div style="margin-top:12px"><button class="btn" data-action="add-budget">Erstes Budget anlegen</button></div></div>';
+  else h+='<div class="blist">'+ids.map(function(id){
+    var c=catVar(id),b=bud[id],sp=st.byCat[id]||0,left=b-sp,ratio=sp/b;
+    var state=ratio>1?['over','Überzogen','var(--neg)']:ratio>=.8?['warn','Fast aufgebraucht','var(--warn)']:['ok','Im Rahmen',c.color];
+    var only=S.budgets.months[m]&&S.budgets.months[m][id]>0?'<span class="badge">nur '+monthName(m,{month:'short'}).replace('.','')+'</span>':'';
+    return '<button class="bcard" data-action="edit-budget" data-cat="'+id+'"><div class="btop"><span class="dot" style="background:'+c.color+'"></span><span class="cn">'+esc(c.name)+only+'</span><span class="pill '+state[0]+'">'+state[1]+'</span></div>'+
+      '<div class="bleft '+(left<0?'neg':'')+'">'+money(Math.abs(left))+' <small>'+(left<0?'drüber':'übrig')+'</small></div>'+
+      '<div class="bbar"><span style="width:'+(Math.min(ratio,1)*100).toFixed(1)+'%;background:'+state[2]+'"></span></div>'+
+      '<div class="bmeta"><span>'+money(sp)+' von '+money(b)+' ausgegeben</span>'+(cur&&left>0?'<span>≈ '+money(Math.floor(left/rem))+' pro Tag</span>':'')+'</div></button>'}).join('')+'</div>';
+  h+='</section>';
+  var free=Object.keys(st.byCat).filter(function(id){return !bud[id]}).sort(function(a,b){return st.byCat[b]-st.byCat[a]});
+  if(free.length)h+='<section><div class="sec-head"><h2>Ohne Budget</h2></div><div class="list">'+free.map(function(id){var c=catVar(id);
+    return '<button class="row" data-action="add-budget" data-cat="'+id+'"><span class="dot" style="background:'+c.color+'"></span><span class="mid"><span class="t">'+esc(c.name)+'</span><span class="s">'+money(st.byCat[id])+' ausgegeben</span></span><span class="add-chip">+ Budget</span></button>'}).join('')+'</div></section>';
+  return h;
+}
+function openBudget(cat){
+  var m=ui.month,bud=budgetsFor(m),existing=!!(cat&&bud[cat]),mo=S.budgets.months[m]||{},onlyHere=!!(cat&&mo[cat]>0);
+  form={type:'budget',cat:cat||null,existing:existing};
+  var avail=varCats().filter(function(c){return !bud[c.id]});
+  if(!cat&&!avail.length){toast('Alle Kategorien haben schon ein Budget.');return}
+  var spent=cat?(stats(m).byCat[cat]||0):0,mn=monthName(m,{month:'long',year:'numeric'}),h='<form id="f-budget" novalidate>';
+  if(cat){var c=catVar(cat);h+='<div class="btop" style="font-size:17px"><span class="dot" style="background:'+c.color+'"></span><span class="cn">'+esc(c.name)+'</span></div>'}
+  else h+='<label class="fld" for="f-bcat"><span>Kategorie</span><select id="f-bcat">'+avail.map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('')+'</select></label>';
+  h+='<label class="fld" for="f-amount"><span>Budget pro Monat in €</span><input id="f-amount" inputmode="decimal" placeholder="z. B. 150" value="'+(existing?fmtInput(bud[cat]):'')+'"></label>';
+  if(cat)h+='<p class="hint" style="margin:0">Im '+mn+' bisher ausgegeben: '+money(spent)+'</p>';
+  h+='<fieldset><legend>Gilt für</legend><div class="catgrid">'+
+    '<label class="cat"><input type="radio" name="bscope" value="all"'+(onlyHere?'':' checked')+'><span>Jeden Monat</span></label>'+
+    '<label class="cat"><input type="radio" name="bscope" value="month"'+(onlyHere?' checked':'')+'><span>Nur '+mn+'</span></label></div></fieldset>'+
+    '<p class="err" id="f-err" role="alert"></p><button class="primary" type="submit">Budget speichern</button>'+
+    (existing?'<button type="button" class="danger" data-action="del-budget">Budget entfernen</button>':'')+'</form>';
+  openSheet(existing?'Budget bearbeiten':'Neues Budget',h);
+}
+function saveBudget(){
+  var m=ui.month,cat=form.cat||($('#f-bcat')&&$('#f-bcat').value);if(!cat)return err('Bitte eine Kategorie wählen.');
+  var a=parseAmount($('#f-amount').value);if(!(a>0))return err('Bitte einen Betrag größer als 0 eingeben.');
+  var sc=document.querySelector('input[name=bscope]:checked'),scope=sc?sc.value:'all';
+  if(scope==='all'){S.budgets.default[cat]=a;if(S.budgets.months[m])delete S.budgets.months[m][cat]}
+  else{S.budgets.months[m]=S.budgets.months[m]||{};S.budgets.months[m][cat]=a}
+  save();closeSheet();render();toast('Budget gespeichert');
+}
+function deleteBudget(){
+  var m=ui.month,cat=form.cat,mo=S.budgets.months[m];
+  if(mo&&mo[cat]>0)delete mo[cat];else delete S.budgets.default[cat];
+  save();closeSheet();render();toast('Budget entfernt');
+}
+
 /* ---------- Auswertung ---------- */
 function niceStep(raw){if(raw<=0)return 500;var p=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/p;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p}
 function trendSVG(m,n){
@@ -539,7 +630,7 @@ function vStats(){
 }
 
 /* ---------- Rendern ---------- */
-var VIEWS={home:vHome,entries:vEntries,fixed:vFixed,stats:vStats};
+var VIEWS={home:vHome,entries:vEntries,budget:vBudget,fixed:vFixed,stats:vStats};
 function render(){
   $('#month-label').textContent=monthName(ui.month,{month:'long',year:'numeric'});
   $('#month-today').hidden=ui.month===curYM();
@@ -600,6 +691,7 @@ function openSettings(){
   form={type:'settings'};
   var h='<div class="set">'+
     '<div class="notebox">Deine Daten liegen nur auf diesem Gerät, in diesem Browser. Es gibt keinen Server und kein Konto. Speichere ab und zu ein Backup, zum Beispiel in der Dateien-App oder in iCloud Drive.</div>'+
+    '<h3>Darstellung</h3><div class="seg" role="group" aria-label="Darstellung">'+[['system','Wie iPhone'],['light','Hell'],['dark','Dunkel']].map(function(o){return '<button data-action="theme" data-t="'+o[0]+'" aria-pressed="'+((S.prefs.theme||'system')===o[0])+'">'+o[1]+'</button>'}).join('')+'</div>'+
     '<h3>Backup erstellen</h3>'+
     '<div class="btnrow"><button class="btn" data-action="download-backup">Als Datei sichern</button><button class="btn" data-action="copy-backup">Als Text kopieren</button></div>'+
     '<textarea id="backup-out" readonly hidden aria-label="Backup-Text"></textarea>'+
@@ -649,6 +741,7 @@ function saveCat(){
 function deleteCat(){
   var k=form.kind,id=form.editId;
   S.customCats[k]=customOf(k).filter(function(c){return c.id!==id});
+  if(k==='var'){delete S.budgets.default[id];Object.keys(S.budgets.months).forEach(function(mm){delete S.budgets.months[mm][id]})}
   if(k==='var')S.entries.forEach(function(e){if(e.cat===id)e.cat='sonstiges'});else S.fixed.forEach(function(f){if(f.category===id)f.category='sonst'});
   save();render();openCats(k);toast('Kategorie gelöscht');
 }
@@ -665,6 +758,8 @@ function readMonthRange(){
 }
 function submitForm(id){
   if(id==='f-catform')return saveCat();
+  if(id==='f-budget')return saveBudget();
+  var bmsg=null;
   if(id==='f-entry'){
     var amt=parseAmount($('#f-amount').value);if(!(amt>0))return err('Bitte einen Betrag größer als 0 eingeben, z. B. 12,50.');
     var date=$('#f-date').value;if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return err('Bitte ein Datum auswählen.');
@@ -672,6 +767,7 @@ function submitForm(id){
     var data={kind:form.kind,date:date,amount:amt,cat:form.kind==='in'?'einnahme':(ch?ch.value:'sonstiges'),note:$('#f-note').value.trim()};
     if(form.id)Object.assign(findIn(S.entries,form.id),data);else{data.id=uid();S.entries.push(data)}
     ui.month=date.slice(0,7);
+    if(data.kind!=='in')bmsg=budgetMsg(data.cat,ui.month);
   }else if(id==='f-fixed'||id==='f-income'){
     var name=$('#f-name').value.trim();if(!name)return err('Bitte eine Bezeichnung eingeben.');
     var a=parseAmount($('#f-amount').value);if(!(a>0))return err('Bitte einen Betrag größer als 0 eingeben.');
@@ -680,7 +776,7 @@ function submitForm(id){
     if(id==='f-fixed'){d2.interval=Number($('#f-int').value)||1;d2.category=$('#f-cat').value}
     if(form.id)Object.assign(findIn(list,form.id),d2);else{d2.id=uid();list.push(d2)}
   }else return;
-  save();closeSheet();render();toast('Gespeichert');
+  save();closeSheet();render();toast(bmsg||'Gespeichert');
 }
 function deleteCurrent(){
   var list=form.type==='entry'?S.entries:form.type==='fixed'?S.fixed:S.incomes;
@@ -713,6 +809,10 @@ document.addEventListener('click',function(ev){
     case 'catkind':openCats(t.dataset.k);break;
     case 'edit-cat':openCats(form.kind,t.dataset.id);break;
     case 'del-cat':if(arm(t,'Wirklich löschen? Nochmal tippen'))deleteCat();break;
+    case 'add-budget':openBudget(t.dataset.cat||null);break;
+    case 'edit-budget':openBudget(t.dataset.cat);break;
+    case 'del-budget':if(arm(t,'Wirklich entfernen? Nochmal tippen'))deleteBudget();break;
+    case 'theme':S.prefs.theme=t.dataset.t;save();applyTheme();openSettings();break;
     case 'homechart':S.prefs.homeChart=t.dataset.c;save();render();break;
     case 'close':closeSheet();break;
     case 'kind':
@@ -729,7 +829,7 @@ document.addEventListener('click',function(ev){
       break;
     case 'download-backup':
       try{var blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'}),url=URL.createObjectURL(blob),ln=document.createElement('a');
-        ln.href=url;ln.download='haushaltsbuch-backup-'+todayISO()+'.json';document.body.appendChild(ln);ln.click();ln.remove();setTimeout(function(){URL.revokeObjectURL(url)},5000);
+        ln.href=url;ln.download='girlmath-backup-'+todayISO()+'.json';document.body.appendChild(ln);ln.click();ln.remove();setTimeout(function(){URL.revokeObjectURL(url)},5000);
         toast('Backup-Datei erstellt')}catch(e){toast('Speichern nicht möglich. Nutze „Als Text kopieren“.')}
       break;
     case 'import-paste':var v=$('#import-text').value;if(!v.trim()){toast('Füge zuerst den Backup-Text ein.');break}importData(v);break;
@@ -742,6 +842,9 @@ document.addEventListener('change',function(ev){
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&$('#sheet').hidden)render()});
 
+var themeSet=false;
+function applyTheme(){var t=S.prefs.theme||'system',r=document.documentElement;if(t==='system'){if(themeSet){r.removeAttribute('data-theme');themeSet=false}}else{r.setAttribute('data-theme',t);themeSet=true}}
+applyTheme();
 render();
 if(window.__STANDALONE__&&'serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
 })();
